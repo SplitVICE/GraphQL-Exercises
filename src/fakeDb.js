@@ -1,4 +1,4 @@
-// Fake db for testing.
+// Fake database.
 module.exports = {
     people: [
         {
@@ -18,6 +18,18 @@ module.exports = {
             name: "Claire",
             age: 22,
             job: "Designer"
+        },
+        {
+            _id: 4,
+            name: "Daniel",
+            age: 63,
+            job: "Voice actor"
+        },
+        {
+            _id: 5,
+            name: "Erika",
+            age: 17,
+            job: "Student"
         }
     ]
 }

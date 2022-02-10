@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GraphQL</title>
+</head>
+
+<body>
+    <button onclick="FetchPeople()">Fetch people</button>
+    <div id="content_fetch"></div>
+    <hr>
+    <input type="text" id="search_name" placeholder="Search by name">
+    <input type="text" id="search_job" placeholder="Search by job">
+    <button onclick="FetchPeopleSearch()">Search</button>
+    <div id="content_search"></div>
+
+    <script>
+        // Queries data to GraphQL.
+        async function FetchPeople() {
+            const req = await fetch('/graphql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', },
+                body: JSON.stringify({ query: `{ people { _id name age job } }` })
+            })
+            const res = await req.json();
+            let content = "";
+            for (const person of res.data.people) {
+                content += /* html */`
+                <div>${person.name} - ID: ${person._id}<div>
+                Age: ${person.age} - Job: ${person.job}
+                <br><br>`
+            }
+            document.getElementById("content_fetch").innerHTML = content;
+        }
+
+        // Queries data to GraphQL with parameters.
+        async function FetchPeopleSearch() {
+            const name = dVById("search_name"), job = dVById("search_job");
+            // TODO: Improve query with variables.
+            const query = `{ people${(() => {
+                if (name != "" || job != "") {
+                    let payload = "(";
+                    if (name != "") payload += `name: "${name}"`
+                    if (job != "") payload += `job: "${job}" `
+                    payload += ")";
+                    return payload;
+                } else return "";
+            })()} { _id name age job } }`;
+            const req = await fetch('/graphql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', },
+                //body: JSON.stringify({ query: query })
+                body: JSON.stringify({ query })
+            })
+            const res = await req.json();
+            let content = "";
+            for (const person of res.data.people) {
+                content += /* html */`
+                <div>${person.name} - ID: ${person._id}<div>
+                Age: ${person.age} - Job: ${person.job}
+                <br><br>`
+            }
+            document.getElementById("content_search").innerHTML = content;
+        }
+
+        function dVById(id) {
+            return document.getElementById(id).value;
+        }
+    </script>
+</body>
+
+</html>

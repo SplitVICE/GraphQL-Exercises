@@ -1,14 +1,16 @@
 {
-  "name": "express-graphql-practice",
+  "name": "graphql-exercises",
   "version": "0.0.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/index.js"
   },
-  "keywords": ["GraphQL", "VICE", "SPLIT VICE"],
-  "author": "VICE",
-  "license": "ISC",
+  "keywords": [
+    "GraphQL"
+  ],
+  "author": "SPLIT VICE",
+  "license": "MIT",
   "dependencies": {
     "express": "^4.17.2",
     "express-graphql": "^0.12.0",

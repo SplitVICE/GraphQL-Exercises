@@ -1,25 +1,17 @@
-// Tutorials
-// Graphql, Curso Practico con Nodejs y Mongodb - https://youtu.be/Wl8O6wW4FJU
-// graphql-js:  https://graphql.org/graphql-js/
-
 const express = require('express');
 const app = express();
 
-// ============================================================
-// GraphQL settings
-// ============================================================
 const { graphqlHTTP } = require('express-graphql');
-const { buildSchema } = require('graphql');
-const resolvers = require('./graphql/resolvers');
-const schemaContent = require('./graphql/schema');
-const schema = buildSchema(schemaContent);
-// ============================================================
+const graphQlRootSchema = require('./graphql');
 
-// Middlewares
-app.use('/graphql', graphqlHTTP({
-	schema: schema,
-	rootValue: resolvers,
-	graphiql: true,
+// GraphQL middleware set.
+app.use('/graphql', graphqlHTTP({ // GraphQL route.
+	schema: require('graphql').buildSchema(graphQlRootSchema.schema),
+	rootValue: graphQlRootSchema.root,
+	graphiql: true // Web testing interface => http://localhost:port/graphql
 }));
+app.get('/', (req, res) => {
+	res.sendFile(require("path").join(__dirname + "/index.html"));
+});
 
 app.listen(4000, () => console.log('GraphQL test server running on localhost:4000/graphql'));
