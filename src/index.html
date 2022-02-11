@@ -23,7 +23,7 @@
             const req = await fetch('/graphql', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', },
-                body: JSON.stringify({ query: `{ people { _id name age job } }` })
+                body: JSON.stringify({ query: `{ people: getPeople { _id name age job } }` })
             })
             const res = await req.json();
             let content = "";
@@ -40,7 +40,7 @@
         async function FetchPeopleSearch() {
             const name = dVById("search_name"), job = dVById("search_job");
             // TODO: Improve query with variables.
-            const query = `{ people${(() => {
+            const query = `{ people: getPeople${(() => {
                 if (name != "" || job != "") {
                     let payload = "(";
                     if (name != "") payload += `name: "${name}"`

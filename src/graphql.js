@@ -1,31 +1,37 @@
+const { v4: uuidv4 } = require('uuid');
+let { people } = require("./fakeDb");
 module.exports = {
-    schema: `type Query {
-        ping: String
-        people(_id: Int, name: String, job: String): [People]
-        uuid: String
-    }
-
+    schema: `
     type People {
-        _id: Int
+        _id: String
         name: String
         age: Int
         job: String
+    }
+
+    type Query {
+        ping: String
+        getPeople(_id: Int, name: String, job: String): [People]
+        uuid: String
+    }
+
+    type Mutation {
+        setPerson(name: String, job: String, age: Int): People
     }`,
     root: {
         ping: () => 'pong',
-        /**
-         * Returns people registries.
-         * @param {Number} _id ID of person registry to filter.
-         * @param {String} name Name of the person registry to filter.
-         * @param {String} job Job of the person registry to filter.
-         * @returns {Array}
-         */
-        people: ({ _id, name, job }) => {
-            let arr = require("./fakeDb").people;
-            if (_id != undefined) arr = arr.filter(n => n._id === _id);
-            if (name != undefined) arr = arr.filter(n => n.name.toLocaleLowerCase() === name.toLocaleLowerCase());
-            if (job != undefined) arr = arr.filter(n => n.job.toLocaleLowerCase() === job.toLocaleLowerCase());
-            return arr;
+        // Returns people registries.
+        getPeople: ({ _id, name, job }) => {
+            let people = require("./fakeDb").people;
+            if (_id != undefined) people = people.filter(n => n._id === _id);
+            if (name != undefined) people = people.filter(n => n.name.toLocaleLowerCase() === name.toLocaleLowerCase());
+            if (job != undefined) people = people.filter(n => n.job.toLocaleLowerCase() === job.toLocaleLowerCase());
+            return people;
+        },
+        // Saves a new person registry inside the fake database.
+        setPerson: ({ name, job, age }) => {
+            people.push({ _id: uuidv4(), name, age, job });
+            return people[people.length - 1];
         },
         uuid: () => uuidv4()
     }

@@ -10,6 +10,7 @@ app.use('/graphql', graphqlHTTP({ // GraphQL route.
 	rootValue: graphQlRootSchema.root,
 	graphiql: true // Web testing interface => http://localhost:port/graphql
 }));
+
 app.get('/', (req, res) => {
 	res.sendFile(require("path").join(__dirname + "/index.html"));
 });
