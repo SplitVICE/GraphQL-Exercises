@@ -1,5 +1,4 @@
 const { v4: uuidv4 } = require('uuid');
-let { people } = require("./fakeDb");
 module.exports = {
     schema: `
     type People {
@@ -22,7 +21,7 @@ module.exports = {
         ping: () => 'pong',
         // Returns people registries.
         getPeople: ({ _id, name, job }) => {
-            let people = require("./fakeDb").people;
+            let { people } = require("./fakeDb");
             if (_id != undefined) people = people.filter(n => n._id === _id);
             if (name != undefined) people = people.filter(n => n.name.toLocaleLowerCase() === name.toLocaleLowerCase());
             if (job != undefined) people = people.filter(n => n.job.toLocaleLowerCase() === job.toLocaleLowerCase());
@@ -30,6 +29,7 @@ module.exports = {
         },
         // Saves a new person registry inside the fake database.
         setPerson: ({ name, job, age }) => {
+            const { people } = require("./fakeDb");
             people.push({ _id: uuidv4(), name, age, job });
             return people[people.length - 1];
         },
