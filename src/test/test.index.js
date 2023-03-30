@@ -63,6 +63,24 @@ describe("Query filtered responses", () => {
                 Object.keys(people[0]).length === 4
         })());
     });
+    it("UUID with specific length", async () => {
+        const query = "{ uuid(length: 5) }";
+        const data = await axiosPost(query);
+        assert((() => {
+            const { uuid } = data;
+            return uuid !== undefined && uuid.length === 5
+        })());
+    });
+    it("UUID with specific length using variables", async () => {
+        const variables = { length: 5 };
+        const query = "query GetUUID($length: Int){ uuid(length: $length) }";
+        const data = await axiosPostVariables(query, variables);
+        console.log(data)
+        assert((() => {
+            const { uuid } = data;
+            return uuid !== undefined && uuid.length === 5
+        })());
+    });
 })
 
 describe("Query mutation", () => {
