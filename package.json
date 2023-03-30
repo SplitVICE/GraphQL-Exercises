@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/index.js",
-    "test": "mocha test/test.*.js"
+    "test": "mocha src/test/test.*.js"
   },
   "keywords": [
     "GraphQL"

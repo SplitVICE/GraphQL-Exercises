@@ -2,7 +2,7 @@ from time import sleep
 from os import system
 
 commands = [
-    "cd .. && npm run test"
+    "cd .. && cd .. && npm run test"
 ]
 
 while True:
